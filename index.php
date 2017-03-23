@@ -1,7 +1,6 @@
 <?php
 set_time_limit(0);
 error_reporting(E_ALL);
-
 define('EXT_CLASS', '.php');
 if(! ini_get('date.timezone')) date_default_timezone_set('Asia/Shanghai');
 define("REAL_ROOT_PATH", dirname(__FILE__) . '/');
