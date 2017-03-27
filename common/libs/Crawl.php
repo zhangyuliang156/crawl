@@ -86,12 +86,12 @@ abstract class Crawl
         curl_setopt($ch, CURLOPT_TIMEOUT, $plus['timeout']);
         curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
 
-        if (strtolower($urlarr['scheme']) == 'https')
+        if (isset($urlarr['scheme']) && strtolower($urlarr['scheme']) == 'https')
         {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         }
-        if('post' == strtolower($plus['method']))
+        if(isset($plus['method']) && 'post' == strtolower($plus['method']))
         {
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $plus['body']);
