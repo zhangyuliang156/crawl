@@ -22,34 +22,23 @@ class GoogletrendsCrawl extends ICrawl
         'all' => 'all',
     );
 
-    public function getShoppingAverageValue($params)
+    public function multiline($params)
     {
-        $totalValue = 0;
         $commQueryParam = $this->hl.'&'.$this->tz;
-        $req = '{"comparisonItem":[{"keyword":"shopping","geo":"US","time":"'.$this->period[$params['period']].'"}],"category":0,"property":""}';
+        $req = '{"comparisonItem":[{"keyword":"'.$params['keywords'].'","geo":"US","time":"'.$this->period[$params['period']].'"}],"category":0,"property":""}';
         $tokenRequestUrl = 'https://trends.google.com/trends/api/explore?'.$commQueryParam.'&req='.urlencode($req);
         $result = $this->_get_content_by_url($tokenRequestUrl);
         $jsonResult = json_decode(substr($result,4));
-        $token = $jsonResult->widgets[3]->token;
-        $requestObj = $jsonResult->widgets[3]->request;
+        $token = $jsonResult->widgets[0]->token;
+        $requestObj = $jsonResult->widgets[0]->request;
         $req = urlencode(json_encode($requestObj));
-        $requestUrl = 'https://trends.google.com/trends/api/widgetdata/relatedsearches?'.$commQueryParam.'&req='.$req.'&token='.$token;
+        $requestUrl = 'https://trends.google.com/trends/api/widgetdata/multiline?'.$commQueryParam.'&req='.$req.'&token='.$token;
         $rtJson = $this->_get_content_by_url($requestUrl,array('method'=>'GET','header'=>array(),'body'=>array()));
         $resJson = json_decode(substr($rtJson,5));
-        $relationKeywordsArr =  $resJson->default->rankedList[0]->rankedKeyword;
-        $validateValue = 0; $count = 0;
-        foreach ($relationKeywordsArr as $relationKeywords) {
-            if (preg_match('/shopping/',$relationKeywords->query)) {
-                $relationKeywordValue = $relationKeywords->value;
-                $result = $this->compareWithShopping(array('keywords'=>$relationKeywords->query,'period'=>$params['period']));
-                $validateValue += floor(($result['averages']['shopping']/$result['averages']['keywords'])*$relationKeywordValue);
-                $count ++;
-            }
-        }
-        $averageValue = ceil($validateValue/$count);
-        return $averageValue;
+        $timeLineDataArr =  $resJson->default->timelineData;
+        return $timeLineDataArr;
     }
-
+    
     public function compareWithShopping($params) {
         $commQueryParam = $this->hl.'&'.$this->tz;
         $cookie = $this->getCookie();
