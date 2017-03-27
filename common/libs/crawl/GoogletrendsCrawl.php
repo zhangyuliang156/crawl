@@ -22,7 +22,7 @@ class GoogletrendsCrawl extends ICrawl
         'all' => 'all',
     );
 
-    public function multiline($params)
+    public function getMultiline($params)
     {
         $commQueryParam = $this->hl.'&'.$this->tz;
         $req = '{"comparisonItem":[{"keyword":"'.$params['keywords'].'","geo":"US","time":"'.$this->period[$params['period']].'"}],"category":0,"property":""}';

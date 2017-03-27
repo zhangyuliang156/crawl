@@ -4,7 +4,9 @@ class crawlController {
 
     public function googleTrendAction($params)
     {
-        OurmallApi::getCrawl('Googletrends')->getShoppingAverageValue($params);
+        $res = OurmallApi::getCrawl('Googletrends')->getMultiline($params);
+        return $res;
+
     }
 
     public function testAction($params)
