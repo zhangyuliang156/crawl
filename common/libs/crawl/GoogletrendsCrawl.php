@@ -25,7 +25,7 @@ class GoogletrendsCrawl extends ICrawl
     public function getMultiline($params)
     {
         $commQueryParam = $this->hl.'&'.$this->tz;
-        $req = '{"comparisonItem":[{"keyword":"'.$params['keywords'].'","geo":"US","time":"'.$this->period['12m'].'"}],"category":0,"property":""}';
+        $req = '{"comparisonItem":[{"keyword":"'.$params['keywords'].'","geo":"","time":"'.$this->period['12m'].'"}],"category":0,"property":""}';
         $tokenRequestUrl = 'https://trends.google.com/trends/api/explore?'.$commQueryParam.'&req='.urlencode($req);
         $result = $this->_get_content_by_url($tokenRequestUrl);
         $jsonResult = json_decode(substr($result,4));

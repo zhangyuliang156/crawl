@@ -16,7 +16,6 @@ set_include_path(
     .CONTROLLERS_PATH		.PATH_SEPARATOR
 );
 require_once (COMMON_CORE_CORE_PATH.'AutoLoadHander.php');
-
 if (isset($_REQUEST['m']) && isset($_REQUEST['a'])) {
     $controller = $_REQUEST['m'].'Controller';
     unset($_REQUEST['m']);
